@@ -12,8 +12,7 @@ import pickle
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import os
-st.write("Files in directory:", os.listdir())
+
 
 # -------------------------------
 # Page Configuration
@@ -30,8 +29,18 @@ st.write("Enter soil parameters to get AI-based crop and fertilizer suggestions.
 @st.cache_resource
 def load_model():
     return pickle.load(open("model.pkl","rb"))
+import os
+import pickle
+import streamlit as st
+
+@st.cache_resource
+def load_model():
+    base_path = os.path.dirname(__file__)
+    model_path = os.path.join(base_path, "model.pkl")
+    return pickle.load(open(model_path, "rb"))
 
 model = load_model()
+
 
 # -------------------------------
 # Sidebar Info

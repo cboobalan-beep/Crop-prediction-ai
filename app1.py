@@ -1,3 +1,8 @@
+import os
+import streamlit as st
+
+st.write("Working dir:", os.getcwd())
+st.write("Files here:", os.listdir())
 # -*- coding: utf-8 -*-
 """Untitled2.ipynb
 
@@ -26,22 +31,23 @@ st.write("Enter soil parameters to get AI-based crop and fertilizer suggestions.
 # -------------------------------
 # Load Model (Optimized)
 # -------------------------------
-@st.cache_resource
-def load_model():
-    return pickle.load(open("model.pkl","rb"))
 import os
 import pickle
 import streamlit as st
 
 @st.cache_resource
 def load_model():
-    base_path = os.path.dirname(__file__)
-    model_path = os.path.join(base_path, "model.pkl")
-    return pickle.load(open(model_path, "rb"))
+    base_dir = os.path.dirname(os.path.abspath(__file__))  # absolute path to this file
+    model_path = os.path.join(base_dir, "models", "model.pkl")
+    
+    if not os.path.exists(model_path):
+        st.error(f"model.pkl not found at: {model_path}")
+        st.stop()
+        
+    with open(model_path, "rb") as f:
+        return pickle.load(f)
 
 model = load_model()
-
-
 # -------------------------------
 # Sidebar Info
 # -------------------------------
